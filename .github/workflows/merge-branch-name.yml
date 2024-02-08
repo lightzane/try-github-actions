@@ -1,0 +1,23 @@
+name: Get Merge Branch Name
+
+on: 
+  pull_request:
+    types: [closed]
+    branches:
+      - '**'
+
+env:
+  SCRIPTS: .github/scripts
+
+jobs: 
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get Destination Branch
+        run: |
+          chmod 755 ${{ env.SCRIPTS }}/*.sh
+          ${{ env.SCRIPTS }}/branchy.sh $GITHUB_BASE_REF

@@ -1,0 +1,33 @@
+name: Sample lang naman
+
+on: push
+
+env:
+  SCRIPTS: .github/scripts
+
+jobs: 
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test echo world
+        run: echo Hello World
+
+      - name: Check jq version
+        run: jq --version
+
+      - name: Directory
+        run: |
+          echo $GITHUB_WORKSPACE
+          ls
+
+      - name: Github Ref or Branch name
+        run: "echo Your github ref is: $GITHUB_REF"
+
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Execute the branchy shell
+        run: |
+          chmod 755 ${{ env.SCRIPTS }}/*.sh
+          ${{ env.SCRIPTS }}/branchy.sh $GITHUB_REF
+        

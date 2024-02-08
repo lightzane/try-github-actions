@@ -1,0 +1,25 @@
+name: Yummy Fruity Loops
+
+on: 
+  workflow_run:
+    workflows: [Get Merge Branch Name]
+    types: [completed]
+
+env:
+  SCRIPTS: .github/scripts
+
+jobs:
+  fruit-shake:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Check JSON content
+        run: cat ./data.json
+
+      - name: List fruits
+        run: |
+          chmod 755 ${{ env.SCRIPTS }}/fruits.sh
+          ${{ env.SCRIPTS }}/fruits.sh

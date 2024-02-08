@@ -1,0 +1,47 @@
+name: Shell Script
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  SHELL: .github/scripts/branchy.sh
+  PUBLISH: .github/scripts/publish.sh
+  CONTRACT_NAME: sample-plan
+
+jobs:
+  rover:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Publish
+        run: |
+          chmod 755 $PUBLISH
+          $PUBLISH
+
+  go-shell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run shell to store BRANCHY variable
+        run: |
+          chmod 755 ${{ env.SHELL }}
+          ${{ env.SHELL }} sample-value
+          ${{ env.SHELL }}
+
+      - name: Echo branchy argument
+        shell: bash
+        run: echo $BRANCHY and ${{ github.ref }}
+
+      - name: Echo environmentalist branchy
+        shell: bash
+        run: echo ${{ env.BRANCHY }} from env.BRANCHY
+
+      - name: Echo a field directly from env
+        shell: bash
+        run: echo $SHELL from env.SHELL

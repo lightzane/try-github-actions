@@ -1,0 +1,6 @@
+{
+    "title": "Simple Plan",
+    "fruits": ["apple", "banana", "cherry", "lemon"],
+    "include_tags": ["simple"],
+    "exclude_tags": []
+}
